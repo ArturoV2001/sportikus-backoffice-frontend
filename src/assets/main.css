@@ -4,10 +4,14 @@
 @tailwind utilities;
 
 #app {
-  max-width: 1280px;
-  margin: 0 auto;
-  padding: 2rem;
+  height: 100vh; /* Ocupa toda la altura de la ventana */
+  display: flex; /* Flexbox para centrar */
+  justify-content: center; /* Centrar horizontalmente */
+  align-items: center; /* Centrar verticalmente */
+  margin: 0;
+  padding: 0;
   font-weight: normal;
+  background-color: #ffffff; /* Fondo claro como en el componente */
 }
 
 a,
@@ -20,19 +24,24 @@ a,
 
 @media (hover: hover) {
   a:hover {
-    background-color: hsla(160, 100%, 37%, 0.2);
+    background-color: #ffffff;
   }
 }
 
 @media (min-width: 1024px) {
   body {
+    height: 100vh; /* Asegura que el body ocupe toda la pantalla */
+    margin: 0;
     display: flex;
-    place-items: center;
+    align-items: center;
+    justify-content: center;
+    background-color: #ffffff; /* Fondo consistente */
   }
 
   #app {
-    display: grid;
-    grid-template-columns: 1fr 1fr;
-    padding: 0 2rem;
+    display: flex;
+    flex-direction: column; /* Asegura que los elementos estén en columna */
+    width: 100%;
+    background-color: #ffffff; /* Fondo blanco para mantener consistencia */
   }
 }

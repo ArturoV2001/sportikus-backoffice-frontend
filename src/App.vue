@@ -1,33 +1,41 @@
 <template>
-  <LoginComponent v-if="!auth"/>
+  <LoginComponent v-if="viewOption === 0"/>
+  <MainComponent v-if="viewOption === 1"/>
 </template>
 
 <script setup>
-
-import { onMounted, ref } from 'vue'
-import { useRouter } from 'vue-router'
+import { onMounted, ref } from 'vue';
+import { useRouter } from 'vue-router';
+import { authCheckSession } from '@/services/auth.js';
 import LoginComponent from '@/components/Login/LoginComponent.vue'
+import MainComponent from '@/components/MainComponent.vue'
 
 const auth = ref(false);
 const router = useRouter();
-const access_token = ref(null);
-const startApplication =  () => {
-  access_token.value = null;
+const response = ref();
+const viewOption = ref();
+
+const startApplication = async () => {
+  viewOption.value =  0;
   auth.value = false;
   if (localStorage.getItem('auth')) {
-    access_token.value = localStorage.getItem('auth');
-    let response = fetch(import.meta.env.VITE_API_BASE_URL, {
-      headers:{
-        Authorization: `Bearer ${access_token.value}`,
-      }
-    });
-    console.log(response);
-  }else {
-    console.log("No hay ningun usuario logueado, login aqui")
-    router.push({name: 'login'})
+    response.value = await authCheckSession()
+      .catch(()=>{
+        router.push({ name: 'login' });
+      });
+    if (response.value.authenticated === true) {
+      localStorage.setItem('user', JSON.stringify(response.value.user));
+      viewOption.value = 1;
+    } else {
+      //console.log("llega aqui");
+      //router.push({ name: 'login' });
+    }
+  } else {
+    //router.push({ name: 'login' });
   }
-}
+};
+
 onMounted(() => {
   startApplication();
-})
+});
 </script>

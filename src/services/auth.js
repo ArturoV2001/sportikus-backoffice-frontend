@@ -31,3 +31,14 @@ export const authLogout = async () => {
   return response.data;
 }
 
+export const authCheckSession = async () => {
+  const response = await axios.create({
+    baseURL: baseURL,
+    headers: {
+      'Content-Type': 'application/json',
+      'Authorization': `Bearer ${localStorage.getItem('auth')}`,
+    },
+  }).get('/check-session');
+  return response.data;
+}
+
