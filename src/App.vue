@@ -20,7 +20,7 @@ const startApplication = async () => {
       });
     if (response.value.authenticated === true) {
       localStorage.setItem('user', JSON.stringify(response.value.user));
-      router.push({ name: 'home' });
+      router.push({ name: 'dashboard' });
     } else {
       router.push({ name: 'login' });
     }
