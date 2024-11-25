@@ -2,6 +2,7 @@ import { createRouter, createWebHistory } from 'vue-router'
 import LoginComponent from '@/components/Login/LoginComponent.vue'
 import MainComponent from '@/components/MainComponent.vue'
 import DashboardView from '@/components/Dashboard/DashboardView.vue'
+import ExercisesTable from '@/components/Exercises/ExercisesTable.vue'
 
 const mainComponentRoutes = [
   {
@@ -9,6 +10,13 @@ const mainComponentRoutes = [
     name: 'dashboard',
     components: {
       mainComponent: DashboardView,
+    },
+  },
+  {
+    path: 'exercises',
+    name: 'exercises',
+    components: {
+      mainComponent: ExercisesTable,
     },
   },
 ];
