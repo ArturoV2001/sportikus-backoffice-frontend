@@ -11,7 +11,7 @@
           </button>
           <a href="" class="flex items-center text-2xl font-semibold text-gray-900 dark:text-white">
             <img src="/src/assets/img/logo.png" class="h-8 me-3" alt="FlowBite Logo" />
-            <span class="self-center text-xl font-semibold sm:text-2xl whitespace-nowrap dark:text-white">Sportikus Backoffice</span>
+            <span class="self-center text-xl font-semibold sm:text-2xl whitespace-nowrap text-[#16313C] ">Sportikus Backoffice</span>
           </a>
         </div>
         <div class="flex items-center">

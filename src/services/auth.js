@@ -10,7 +10,12 @@ const api = axios.create({
 });
 
 export const authLogin = async (data) => {
-  const response = await api.post('/login',data);
+  const response = await api.post('/login', {
+    ...data,
+    grant_type:"password",
+    client_id: import.meta.env.VITE_CLIENT_ID,
+    client_secret:import.meta.env.VITE_CLIENT_SECRET
+  });
   return response.data;
 }
 
@@ -27,7 +32,7 @@ export const authLogout = async () => {
       'Content-Type': 'application/json',
       'Authorization': `Bearer ${localStorage.getItem('auth')}`,
     },
-  }).get('/logout');
+  }).get('/logout',{});
   return response.data;
 }
 

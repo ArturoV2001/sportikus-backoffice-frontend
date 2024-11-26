@@ -1,7 +1,7 @@
 <template>
   <NavbarMenu :user="user" :signOutModalRef="signOutModalRef"/>
   <AsideMenu/>
-  <div class="fixed mt-32 p-4 left-0 sm:ml-64 h-lvh rounded-lg dark:border-gray-700">
+  <div class="fixed right-0 w-4/5 h-5/6 top-0 mt-16 p-4 rounded-lg dark:border-gray-700 overflow-auto">
     <router-view name="mainComponent"/>
   </div>
   <SignOutModal ref="signOutModalRef"/>
