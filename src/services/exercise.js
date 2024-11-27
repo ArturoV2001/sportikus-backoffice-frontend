@@ -1,5 +1,4 @@
 import axios from 'axios';
-
 const baseURL = import.meta.env.VITE_API_BASE_URL;
 
 const api = axios.create({
@@ -23,7 +22,7 @@ export const createExercise = async (data) => {
 };
 
 // Obtener un ejercicio específico por ID
-export const getExerciseById = async (id, columns = ['id', 'name', 'description']) => {
+export const getExerciseById = async (id, columns = columns.map(i => i.field)) => {
   const response = await api.get(`/exercises/${id}`, {
     params: { columns: JSON.stringify(columns) },
   });

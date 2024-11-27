@@ -1,11 +1,15 @@
 <template>
-  <RouterView/>
+  <div id="app">
+    <Toast/>
+    <RouterView/>
+  </div>
 </template>
 
 <script setup>
 import { onMounted, ref } from 'vue';
 import { useRouter } from 'vue-router';
 import { authCheckSession } from '@/services/auth.js';
+import Toast from 'primevue/toast';
 
 const auth = ref(false);
 const router = useRouter();

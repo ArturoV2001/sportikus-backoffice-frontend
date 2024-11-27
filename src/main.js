@@ -7,7 +7,7 @@ import App from './App.vue';
 import router from './router';
 import PrimeVue from 'primevue/config';
 import alvue from '@myshell/alvue';
-
+import ToastService  from 'primevue/toastservice';
 
 const app = createApp(App);
 
@@ -21,11 +21,11 @@ app.use(PrimeVue, {
   }
 });
 
+app.use(ToastService);
 app.use(alvue);
-
 app.use(router);
-
 app.use(DialogService);
+
 
 router.isReady().then(() => {
   app.mount('#app');

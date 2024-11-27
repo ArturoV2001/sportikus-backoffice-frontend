@@ -14,12 +14,6 @@ const columns = [
     default: true,
   },
   {
-    field: 'muscular_group_id',
-    header: 'ID del Grupo Muscular',
-    filter: { value: null, matchMode: FilterMatchMode.CONTAINS },
-    default: false,
-  },
-  {
     field: 'muscular_group_name',
     header: 'Nombre del Grupo Muscular',
     filter: { value: null, matchMode: FilterMatchMode.CONTAINS },
