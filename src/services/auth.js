@@ -20,7 +20,12 @@ export const authLogin = async (data) => {
 }
 
 export const authRegister = async (data) => {
-  const response = await api.post('/register',data);
+  const response = await api.post('/register',{
+    ...data,
+    grant_type:"password",
+    client_id: import.meta.env.VITE_CLIENT_ID,
+    client_secret:import.meta.env.VITE_CLIENT_SECRET
+  });
   return response.data;
 }
 
