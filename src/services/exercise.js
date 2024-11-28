@@ -22,7 +22,7 @@ export const createExercise = async (data) => {
 };
 
 // Obtener un ejercicio específico por ID
-export const getExerciseById = async (id, columns = columns.map(i => i.field)) => {
+export const getExerciseById = async (id, columns) => {
   const response = await api.get(`/exercises/${id}`, {
     params: { columns: JSON.stringify(columns) },
   });

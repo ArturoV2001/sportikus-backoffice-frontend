@@ -1,13 +1,13 @@
 <template>
   <Dialog v-model:visible="visible" modal draggable header="Ejercicio" class="w-1/2">
-    <alv-form :action="createElement">
+    <alv-form :action="!id ? createElement : updateElement">
       <div class="flex items-center gap-4 mb-4">
         <label for="item.name" class="font-semibold w-24">Nombre: </label>
         <InputText v-model="itemData.name" id="item.name" class="flex-auto" autocomplete="off" placeholder="Nombre" />
       </div>
       <div class="flex items-center gap-4 mb-4">
         <label for="description" class="font-semibold w-24">Descripción: </label>
-        <Textarea v-model="itemData.description" id="description" class="flex-auto" autocomplete="off" placeholder="Descripción" />
+        <Textarea v-model="itemData.description" id="description" class="flex-auto h-max" autoResize autocomplete="off" placeholder="Descripción" />
       </div>
       <div class="flex items-center gap-4 mb-4">
         <label for="muscle_id" class="font-semibold w-24">Musculo: </label>
@@ -34,28 +34,31 @@ const emit = defineEmits(['elementCreated']);
 const toast = useToast();
 
 import { ref } from 'vue';
-import { getExerciseById, createExercise } from '@/services/exercise.js';
+import { getExerciseById, createExercise, updateExercise } from '@/services/exercise.js';
 import MuscleDropdown from '@/components/Dropdowns/MuscleDropdown.vue';
 
 const visible = ref(false);
-
+const id = ref(null);
 const itemData = ref({
   name: null,
   description: null,
   muscle_id: null,
 });
 
-const props = defineProps({
-  read: { type: Boolean, default: false },
-  id: { type: Object, default: null },
-});
-
-const beforeOpen = async () => {
+const beforeOpen = async (key = null) => {
+  id.value = null;
+  itemData.value = {
+    name: null,
+    description: null,
+    muscle_id: null,
+  };
   visible.value = true;
-  if (props.id !== null) {
-    await getExerciseById(props.id).then((response) => {
-      itemData.value = response.value;
-    });
+  if (key) {
+    await getExerciseById(key, Object.keys(itemData.value))
+      .then(response => {
+        id.value = key;
+        itemData.value = response;
+      });
   }
 };
 
@@ -67,6 +70,28 @@ const createElement = async () => {
         severity: 'success',
         summary: 'Éxito',
         detail: 'Ejercicio agregado correctamente',
+        life: 3000,
+      });
+      emit('elementCreated');
+    })
+    .catch(response => {
+      toast.add({
+        severity: 'error',
+        summary: 'Error',
+        detail: response.message,
+        life: 3000,
+      });
+    })
+};
+
+const updateElement = async () => {
+  await updateExercise(id.value, itemData.value)
+    .then(() => {
+      visible.value = false;
+      toast.add({
+        severity: 'success',
+        summary: 'Éxito',
+        detail: 'Ejercicio actualizado correctamente',
         life: 3000,
       });
       emit('elementCreated');

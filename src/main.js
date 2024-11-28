@@ -8,6 +8,9 @@ import router from './router';
 import PrimeVue from 'primevue/config';
 import alvue from '@myshell/alvue';
 import ToastService  from 'primevue/toastservice';
+import Tooltip from 'primevue/tooltip';
+
+
 
 const app = createApp(App);
 
@@ -25,6 +28,7 @@ app.use(ToastService);
 app.use(alvue);
 app.use(router);
 app.use(DialogService);
+app.directive('tooltip', Tooltip);
 
 
 router.isReady().then(() => {
