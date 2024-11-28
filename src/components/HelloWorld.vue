@@ -41,4 +41,10 @@ h3 {
     text-align: left;
   }
 }
+
+
+touch AilmentsRemoveModal.vue
+touch AilmentsActions.vue
+touch AilmentsModal.vue
+touch AilmentsTable.vue
 </style>

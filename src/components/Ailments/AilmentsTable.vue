@@ -4,7 +4,7 @@
     <div class="w-full flex items-center justify-between mr-2 mb-4 pt-4">
       <!-- Encabezado -->
       <h1 class="text-xl font-semibold sm:text-2xl whitespace-nowrap dark:text-white mr-2Exe">
-        Catálogo de Ejercicios
+        Catálogo de Padecimientos
       </h1>
       <!-- Botones -->
       <div class="flex">
@@ -23,7 +23,7 @@
             <path
               stroke-linecap="round" stroke-linejoin="round" d="M12 9v6m3-3H9m12 0a9 9 0 1 1-18 0 9 9 0 0 1 18 0Z" />
           </svg>
-          <span class="text-md">Añadir un Ejercicio</span>
+          <span class="text-md">Añadir un Padecimiento</span>
         </button>
       </div>
     </div>
@@ -34,8 +34,8 @@
         :loading="loading" class="border border-gray-300">
         <template v-for="item in defaultColumns">
           <Column
-            v-if="item.default" :field="item.field" :header="item.header"
-            header-style="background-color:#16313C; color: #ffffff;" style="width: auto" :key="item.field">
+            v-if="item.default" :field="item.bodyTemplate ? item.bodyTemplate : item.field" :header="item.header"
+            header-style="background-color:#16313C; color: #ffffff;" :style="item.bodyClass ? item.bodyClass : 'width: auto'" :key="item.field">
             <template #filter>
               <InputText
                 v-model="item.filter.value" type="text" placeholder=""
@@ -54,8 +54,8 @@
       </DataTable>
     </div>
   </div>
-  <ExercisesModal ref="modal" @elementCreated="restartFilters"/>
-  <ExerciseRemoveModal ref="deleteModal" @elementRemoved="restartFilters"/>
+  <AilmentsModal ref="modal" @elementCreated="restartFilters"/>
+  <AilmentsRemoveModal ref="deleteModal" @elementRemoved="restartFilters"/>
 </template>
 
 
@@ -64,12 +64,12 @@ import InputText from 'primevue/inputtext'
 import DataTable from 'primevue/datatable';
 import Column from 'primevue/column';
 import { ref, onMounted } from 'vue';
-import { getExercises } from '@/services/exercise.js';
-import { columns } from '@/resources/Columns/ExercisesColumns.js';
+import { getAilments } from '@/services/ailment.js';
+import { columns } from '@/resources/Columns/AilmentsColumns.js';
 import debounce from 'lodash/debounce';
-import ExercisesModal from '@/components/Exercises/ExercisesModal.vue'
+import AilmentsModal from '@/components/Ailments/AilmentsModal.vue'
 import ActionButtons from '@/components/GlobalComponents/ActionButtons.vue'
-import ExerciseRemoveModal from '@/components/Exercises/ExerciseRemoveModal.vue'
+import AilmentsRemoveModal from '@/components/Ailments/AilmentsRemoveModal.vue'
 
 const modal = ref(null);
 const deleteModal = ref(null);
@@ -85,7 +85,7 @@ const beforeOpen = async () => {
 
 const chargeData = async () => {
   loading.value = true;
-  await getExercises({
+  await getAilments({
     columns: JSON.stringify(defaultColumns.value.map(i => i.field)),
     filters: JSON.stringify(filters.value),
   })

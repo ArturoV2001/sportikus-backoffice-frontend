@@ -39,7 +39,7 @@
             </div>
             <button
               type="submit"
-              class="w-full text-white bg-primary-600 hover:bg-primary-700 focus:ring-4 focus:outline-none focus:ring-primary-300 font-medium rounded-lg text-sm px-5 py-2.5 text-center dark:bg-primary-600 dark:hover:bg-primary-700 dark:focus:ring-primary-800">
+              class="w-full text-white bg-primary-600 hover:bg-primary-700 focus:ring-4 focus:outline-none focus:ring-primary-300 font-medium rounded-lg text-sm px-5 py-2.5 text-center dark:bg-primary-600 dark:hover:bg-primary-700 dark:focus:ring-primary-800 cursor-pointer">
               Iniciar sesión
             </button>
             <p class="text-sm font-light text-gray-500 dark:text-gray-400">
@@ -71,10 +71,10 @@
             </div>
             <div>
               <label for="gender" class="block mb-2 text-sm font-medium text-gray-900 dark:text-white">Genero</label>
-              <button v-if="registerItem.gender_id === 1" @click="registerItem.gender_id = 2" class="w-full text-white bg-pink-400 hover:bg-pink-500 focus:ring-4 focus:outline-none focus:ring-primary-300 font-medium rounded-lg text-sm px-5 py-2.5 text-center dark:bg-primary-600 dark:hover:bg-primary-700 dark:focus:ring-primary-800">
+              <button v-if="registerItem.gender_id === 1" @click="registerItem.gender_id = 2" class="w-full text-white bg-pink-400 hover:bg-pink-500 focus:ring-4 focus:outline-none focus:ring-pink-300 font-medium rounded-lg text-sm px-5 py-2.5 text-center dark:bg-pink-600 dark:hover:bg-pink-700 dark:focus:ring-pink-800">
                 Mujer
               </button>
-              <button v-else @click="registerItem.gender_id = 1" class="w-full text-white bg-indigo-400 hover:bg-indigo-500 focus:ring-4 focus:outline-none focus:ring-primary-300 font-medium rounded-lg text-sm px-5 py-2.5 text-center dark:bg-primary-600 dark:hover:bg-primary-700 dark:focus:ring-primary-800">
+              <button v-else @click="registerItem.gender_id = 1" class="w-full text-white bg-indigo-400 hover:bg-indigo-500 focus:ring-4 focus:outline-none focus:ring-indigo-300 font-medium rounded-lg text-sm px-5 py-2.5 text-center dark:bg-indigo-600 dark:hover:bg-indigo-700 dark:focus:ring-indigo-800">
               Hombre
             </button>
             </div>
@@ -98,7 +98,7 @@
                 <label for="terms" class="font-light text-gray-500 dark:text-gray-300">Acepto los <a class="font-medium text-primary-600 hover:underline dark:text-primary-500" href="#">Términos y Condiciones</a></label>
               </div>
             </div>
-            <button type="submit" class="w-full text-white bg-primary-600 hover:bg-primary-700 focus:ring-4 focus:outline-none focus:ring-primary-300 font-medium rounded-lg text-sm px-5 py-2.5 text-center dark:bg-primary-600 dark:hover:bg-primary-700 dark:focus:ring-primary-800">Crear cuenta</button>
+            <button type="submit" class="w-full text-white bg-primary-600 hover:bg-primary-700 focus:ring-4 focus:outline-none focus:ring-primary-300 font-medium rounded-lg text-sm px-5 py-2.5 text-center dark:bg-primary-600 dark:hover:bg-primary-700 dark:focus:ring-primary-800 cursor-pointer">Crear cuenta</button>
             <p class="text-sm font-light text-gray-500 dark:text-gray-400">
               ¿Ya tienes una cuenta? <a @click="newUser=false" class="font-medium text-primary-600 hover:underline dark:text-primary-500 cursor-pointer">Inicia sesión aquí</a>
             </p>
@@ -113,10 +113,11 @@
 <script setup>
 import { ref } from 'vue'
 import {authLogin, authRegister} from '@/services/auth.js'
+import { useToast } from 'primevue/usetoast'
 //import { useRouter } from 'vue-router'
 
 //const router = useRouter();
-const response = ref();
+const toast = useToast();
 const newUser = ref(false);
 const termsAndConditions = ref(false);
 
@@ -136,35 +137,60 @@ const registerItem = ref({
 });
 
 const submitLogin = async () => {
-  response.value = await authLogin(loginItem.value)
-    .catch(()=>{
-      console.log("Credenciales invalidas");
+  await authLogin(loginItem.value)
+    .then(response => {
+      toast.add({
+        severity:'success',
+        summary:`¡Bienveid${response.user.gender_id === 1 ? 'a' : 'o'} de nuevo ${response.user.name}!`,
+        life:3000,
+      });
+      setTimeout(() => {
+        localStorage.setItem('auth',response.access_token);
+        localStorage.setItem('user',JSON.stringify(response.user));
+        window.location.href = '/';
+      },3000)
+    })
+    .catch(response => {
+      toast.add({
+        severity:'error',
+        summary:'Error',
+        detail:response.message,
+        life:3000,
+      });
     });
-  if (response.value.access_token && response.value.user){
-    console.log(response.value.access_token);
-    console.log(response.value.user);
-    localStorage.setItem('auth',response.value.access_token);
-    localStorage.setItem('user',JSON.stringify(response.value.user));
-    window.location.href = '/';
-  }
 }
 
 const submitRegister = async () => {
   if (termsAndConditions.value) {
-    response.value = await authRegister(registerItem.value)
+    await authRegister(registerItem.value)
+      .then(response => {
+        toast.add({
+          severity:'success',
+          summary:'¡Felicidades!',
+          detail: `Te has registrado en Sportikus ¡Bienvenid${response.user.gender_id === 1 ? 'a' : 'o'}!`,
+          life: 3000,
+        });
+        setTimeout(() => {
+          localStorage.setItem('auth',response.access_token);
+          localStorage.setItem('user',JSON.stringify(response.user));
+          window.location.href = '/';
+        })
+      })
       .catch(response => {
-        console.log(response.data);
-        console.log("error al registrar")
+        toast.add({
+          severity:'error',
+          summary:'Error',
+          detail:response.message,
+          life:3000,
+        });
       });
-    if (response.value.access_token && response.value.user){
-      console.log(response.value.access_token);
-      console.log(response.value.user);
-      localStorage.setItem('auth',response.value.access_token);
-      localStorage.setItem('user',JSON.stringify(response.value.user));
-      window.location.href = '/';
-    }
   }else {
-    console.log("Acepta los terminos y condiciones.")
+    toast.add({
+      severity:'error',
+      summary:'Error',
+      detail:'Acepta los terminos y condiciones.',
+      life:3000,
+    });
   }
 }
 </script>

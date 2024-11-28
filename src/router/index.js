@@ -3,6 +3,7 @@ import LoginComponent from '@/components/Login/LoginComponent.vue'
 import MainComponent from '@/components/MainComponent.vue'
 import DashboardView from '@/components/Dashboard/DashboardView.vue'
 import ExercisesTable from '@/components/Exercises/ExercisesTable.vue'
+import AilmentsTable from '@/components/Ailments/AilmentsTable.vue'
 
 const mainComponentRoutes = [
   {
@@ -17,6 +18,13 @@ const mainComponentRoutes = [
     name: 'exercises',
     components: {
       mainComponent: ExercisesTable,
+    },
+  },
+  {
+    path: 'ailments',
+    name: 'ailments',
+    components: {
+      mainComponent: AilmentsTable,
     },
   },
 ];

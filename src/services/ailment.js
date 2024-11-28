@@ -23,7 +23,7 @@ export const createAilment = async (data) => {
 };
 
 // Función para obtener los detalles de un ailment específico
-export const getAilment = async (id, columns = ['id', 'email']) => {
+export const getAilment = async (id, columns) => {
   const response = await api.get(`/ailments/${id}`, {
     params: { columns: JSON.stringify(columns) },
   });

@@ -2,6 +2,12 @@ import { FilterMatchMode } from '@primevue/core/api';
 
 const columns = [
   {
+    field: 'id',
+    header: 'ID',
+    filter: { value: null, matchMode: FilterMatchMode.CONTAINS },
+    default: false,
+  },
+  {
     field: 'routine_exercise_id',
     header: 'ID de Ejercicio de Rutina',
     filter: { value: null, matchMode: FilterMatchMode.CONTAINS },
