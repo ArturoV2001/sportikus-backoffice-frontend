@@ -10,13 +10,11 @@ const api = axios.create({
   },
 });
 
-// Función para obtener la lista de datos biométricos
 export const getBiometricData = async (params = {}) => {
   const response = await api.get('/biometric-data', { params });
   return response.data;
 };
 
-// Función para crear un nuevo dato biométrico
 export const createBiometricData = async (data) => {
   const response = await api.post('/biometric-data', data);
   return response.data;
@@ -41,3 +39,9 @@ export const deleteBiometricData = async (id) => {
   const response = await api.delete(`/biometric-data/${id}`);
   return response.data;
 };
+
+export const generateRecommendation = async (data) => {
+  const response = await api.post('/biometric-data-generate-recommendation', data);
+  return response.data;
+};
+

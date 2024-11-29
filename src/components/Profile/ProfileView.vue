@@ -3,7 +3,7 @@
     <h1 class="self-center text-xl font-semibold sm:text-5xl whitespace-nowrap dark:text-white">
       Mi perfil
     </h1>
-    <div class="flex">
+    <div class="flex w-full">
       <div class="w-auto mr-3">
         <Image src="/src/assets/img/user_default.png" alt="Image" class="w-64 mt-10" preview/>
       </div>
@@ -31,7 +31,7 @@
       </div>
     </div>
     <div>
-      <div class="ml-2 border-double border-2 border-light-blue-500 rounded-lg p-6 mt-6">
+      <div class="border-double border-2 border-light-blue-500 rounded-lg p-6 mt-6">
         <h1 class="self-center text-xl font-semibold sm:text-2xl whitespace-nowrap dark:text-white mb-2">
           Cambiar contraseña
         </h1>
