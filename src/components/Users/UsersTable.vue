@@ -4,7 +4,7 @@
     <div class="w-full flex items-center justify-between mr-2 mb-4 pt-4">
       <!-- Encabezado -->
       <h1 class="text-xl font-semibold sm:text-2xl whitespace-nowrap dark:text-white mr-2">
-        Catálogo de Padecimientos
+        Usuarios
       </h1>
       <!-- Botones -->
       <div class="flex">
@@ -23,7 +23,7 @@
             <path
               stroke-linecap="round" stroke-linejoin="round" d="M12 9v6m3-3H9m12 0a9 9 0 1 1-18 0 9 9 0 0 1 18 0Z" />
           </svg>
-          <span class="text-md">Añadir un Padecimiento</span>
+          <span class="text-md">Añadir un Usuario</span>
         </button>
       </div>
     </div>
@@ -54,8 +54,8 @@
       </DataTable>
     </div>
   </div>
-  <AilmentsModal ref="modal" @elementCreated="restartFilters"/>
-  <AilmentsRemoveModal ref="deleteModal" @elementRemoved="restartFilters"/>
+  <UsersModal ref="modal" @elementCreated="restartFilters"/>
+  <UsersRemoveModal ref="deleteModal" @elementRemoved="restartFilters"/>
 </template>
 
 
@@ -64,12 +64,12 @@ import InputText from 'primevue/inputtext'
 import DataTable from 'primevue/datatable';
 import Column from 'primevue/column';
 import { ref, onMounted } from 'vue';
-import { getAilments } from '@/services/ailment.js';
-import { columns } from '@/resources/Columns/AilmentsColumns.js';
+import { getUsers } from '@/services/user.js';
+import { columns } from '@/resources/Columns/UsersColumns.js';
 import debounce from 'lodash/debounce';
-import AilmentsModal from '@/components/Ailments/AilmentsModal.vue'
+import UsersModal from '@/components/Users/UsersModal.vue'
 import ActionButtons from '@/components/GlobalComponents/ActionButtons.vue'
-import AilmentsRemoveModal from '@/components/Ailments/AilmentsRemoveModal.vue'
+import UsersRemoveModal from '@/components/Users/UsersRemoveModal.vue'
 
 const modal = ref(null);
 const deleteModal = ref(null);
@@ -85,7 +85,7 @@ const beforeOpen = async () => {
 
 const chargeData = async () => {
   loading.value = true;
-  await getAilments({
+  await getUsers({
     columns: JSON.stringify(defaultColumns.value.map(i => i.field)),
     filters: JSON.stringify(filters.value),
   })

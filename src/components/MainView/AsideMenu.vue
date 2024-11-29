@@ -8,7 +8,11 @@
             <span class="ms-3">Dashboard</span>
           </router-link>
         </li>
-        <hr>
+        <li>
+          <hr>
+          <span class="flex my-2 items-center pl-2 pt-2 pb-2 text-gray-900 rounded-lg dark:text-white">Catalogos</span>
+          <hr>
+        </li>
         <li>
           <router-link :to="{path: '/exercises'}" @click="spin(2)" class="flex items-center p-2 text-gray-900 rounded-lg dark:text-white hover:bg-gray-100 dark:hover:bg-gray-700 group">
             <i :class="selectedItem === 2 ? 'pi pi-list pi-spin' : 'pi pi-list'" style="font-size: 1.5rem"/>
@@ -19,6 +23,23 @@
           <router-link :to="{path: '/ailments'}" @click="spin(3)" class="flex items-center p-2 text-gray-900 rounded-lg dark:text-white hover:bg-gray-100 dark:hover:bg-gray-700 group">
             <i :class="selectedItem === 3 ? 'pi pi-id-card pi-spin' : 'pi pi-id-card'" style="font-size: 1.5rem"/>
             <span class="ms-3">Padecimientos</span>
+          </router-link>
+        </li>
+        <li>
+          <router-link :to="{path: '/users'}" @click="spin(4)" class="flex items-center p-2 text-gray-900 rounded-lg dark:text-white hover:bg-gray-100 dark:hover:bg-gray-700 group">
+            <i :class="selectedItem === 4 ? 'pi pi-users pi-spin' : 'pi pi-users'" style="font-size: 1.5rem"/>
+            <span class="ms-3">Usuarios</span>
+          </router-link>
+        </li>
+        <li>
+          <hr>
+          <span class="flex my-2 items-center pl-2 pt-2 pb-2 text-gray-900 rounded-lg dark:text-white">Mi espacio</span>
+          <hr>
+        </li>
+        <li>
+          <router-link :to="{path: '/biometric-data'}" @click="spin(5)" class="flex items-center p-2 text-gray-900 rounded-lg dark:text-white hover:bg-gray-100 dark:hover:bg-gray-700 group">
+            <i :class="selectedItem === 5 ? 'pi pi-users pi-spin' : 'pi pi-users'" style="font-size: 1.5rem"/>
+            <span class="ms-3">Mediciones</span>
           </router-link>
         </li>
       </ul>
