@@ -7,6 +7,7 @@ import AilmentsTable from '@/components/Ailments/AilmentsTable.vue'
 import UsersTable from '@/components/Users/UsersTable.vue'
 import ProfileView from '@/components/Profile/ProfileView.vue'
 import BiometricDataTable from '@/components/BiometricData/BiometricDataTable.vue'
+import RecommendationsTable from '@/components/Recommendations/RecommendationsTable.vue'
 
 const mainComponentRoutes = [
   {
@@ -35,6 +36,13 @@ const mainComponentRoutes = [
     name: 'biometric-data',
     components: {
       mainComponent: BiometricDataTable,
+    },
+  },
+  {
+    path: 'recommendations',
+    name: 'recommendations',
+    components: {
+      mainComponent: RecommendationsTable,
     },
   },
   {

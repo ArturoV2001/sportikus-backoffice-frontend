@@ -25,11 +25,11 @@
         :loading="loading" class="border border-gray-300">
         <template v-for="item in defaultColumns">
           <Column
-            v-if="item.default" :field="item.bodyTemplate ? item.bodyTemplate : item.field" :header="item.header"
-            header-style="background-color:#16313C; color: #ffffff;" :style="item.bodyClass ? item.bodyClass : 'width: auto'" :key="item.field">
+            v-if="item.default" :field="item.bodyTemplate ? item.bodyTemplate : item.field" :header="item.header" class="w-auto"
+            header-style="background-color:#16313C; color: #ffffff;" :style="'width: auto'" :key="item.field">
             <template #filter>
               <InputText
-                v-model="item.filter.value" type="text" placeholder=""
+                v-model="item.filter.value" type="text" placeholder="" class="w-min"
                 @valueChange="filterColumn(item.field, item.filter.value)"
               />
             </template>

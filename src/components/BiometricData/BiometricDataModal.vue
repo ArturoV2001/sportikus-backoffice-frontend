@@ -70,8 +70,7 @@
     </div>
     <div v-if="modalScreenOption === 3">
       <div v-if="recommendationSuccess" class="w-full text-center">
-        <i v-if="recommendationSuccess" class="pi pi-address-book
-" style="font-size: 2rem;"/>
+        <i v-if="recommendationSuccess" class="pi pi-address-book" style="font-size: 2rem;"/>
       </div>
       <div class="p-4 text-justify" v-html="recommendation"></div>
     </div>
@@ -126,7 +125,7 @@ const createElement = async () => {
     .then((response) => {
       recommendation.value = response.data.recommendation;
       recommendationSuccess.value = response.success;
-      progressBarIntervalSize.value = recommendationSuccess.value ? 400 : 30;
+      progressBarIntervalSize.value = recommendationSuccess.value ? 800 : 30;
       startProgress();
     })
     .catch((error) => {
@@ -141,7 +140,7 @@ const startProgress = () => {
   modalScreenOption.value = 2;
   progressBarValue.value = 0;
   progressBarInterval.value = setInterval(() => {
-    let newValue = progressBarValue.value + Math.floor(Math.random() * 10) + 1;
+    let newValue = progressBarValue.value + (Math.floor(Math.random() * 10) + 1) * 2;
     if (newValue >= 100) {
       newValue = 100;
       clearInterval(progressBarInterval.value);
