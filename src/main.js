@@ -14,6 +14,8 @@ import Tooltip from 'primevue/tooltip';
 
 const app = createApp(App);
 
+const user = JSON.parse(localStorage.getItem('user'));
+
 app.use(PrimeVue, {
   ripple: true,
   theme: {
@@ -29,6 +31,8 @@ app.use(alvue);
 app.use(router);
 app.use(DialogService);
 app.directive('tooltip', Tooltip);
+
+app.provide('user', user);
 
 
 router.isReady().then(() => {

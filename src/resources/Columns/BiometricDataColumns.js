@@ -16,6 +16,14 @@ const columns = [
   {
     field: 'created_at',
     header: 'Fecha',
+    bodyTemplate: (data) => {
+      const date = new Date(data.created_at);
+      const year = date.getFullYear().toString();
+      const month = (date.getMonth() + 1).toString().padStart(2, '0');
+      const day = date.getDate().toString().padStart(2, '0');
+      return `${year}-${month}-${day}`;
+
+    },
     filter: { value: null, matchMode: FilterMatchMode.CONTAINS },
     default: true,
   },

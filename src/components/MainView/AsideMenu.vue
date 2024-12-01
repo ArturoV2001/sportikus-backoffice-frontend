@@ -38,7 +38,7 @@
         </li>
         <li>
           <router-link :to="{path: '/biometric-data'}" @click="spin(5)" class="flex items-center p-2 text-gray-900 rounded-lg dark:text-white hover:bg-gray-100 dark:hover:bg-gray-700 group">
-            <i :class="selectedItem === 5 ? 'pi pi-users pi-spin' : 'pi pi-users'" style="font-size: 1.5rem"/>
+            <i :class="selectedItem === 5 ? 'pi pi-heart pi-spin' : 'pi pi-heart'" style="font-size: 1.5rem"/>
             <span class="ms-3">Mediciones</span>
           </router-link>
         </li>

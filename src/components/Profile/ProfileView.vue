@@ -90,9 +90,9 @@ const changePassword = () => {
 
 const formatTimestampToDate = (timestamp) => {
   const date = new Date(timestamp);
-  const year = date.getFullYear().toString(); // Últimos dos dígitos del año
-  const month = (date.getMonth() + 1).toString().padStart(2, '0'); // Mes con dos dígitos
-  const day = date.getDate().toString().padStart(2, '0'); // Día con dos dígitos
+  const year = date.getFullYear().toString();
+  const month = (date.getMonth() + 1).toString().padStart(2, '0');
+  const day = date.getDate().toString().padStart(2, '0');
   return `${year}-${month}-${day}`;
 };
 
