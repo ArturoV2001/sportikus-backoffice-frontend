@@ -8,6 +8,7 @@ import UsersTable from '@/components/Users/UsersTable.vue'
 import ProfileView from '@/components/Profile/ProfileView.vue'
 import BiometricDataTable from '@/components/BiometricData/BiometricDataTable.vue'
 import RecommendationsTable from '@/components/Recommendations/RecommendationsTable.vue'
+import RoutineTable from '@/components/Routine/RoutineTable.vue'
 
 const mainComponentRoutes = [
   {
@@ -43,6 +44,13 @@ const mainComponentRoutes = [
     name: 'recommendations',
     components: {
       mainComponent: RecommendationsTable,
+    },
+  },
+  {
+    path: 'routine',
+    name: 'routine',
+    components: {
+      mainComponent: RoutineTable,
     },
   },
   {

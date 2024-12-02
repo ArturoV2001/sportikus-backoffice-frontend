@@ -11,7 +11,7 @@
       </div>
       <div class="flex items-center gap-4 mb-4">
         <label for="muscle_id" class="font-semibold w-24">Musculo: </label>
-        <MuscleDropdown v-model="itemData.muscle_id" :read="read" />
+        <MuscleDropdown v-model="itemData.muscle_id" />
       </div>
       <div class="flex justify-end gap-2">
         <Button type="button" label="Cancelar" severity="secondary" @click="visible = false"></Button>

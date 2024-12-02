@@ -43,7 +43,7 @@ const beforeOpen = async () => {
   currentYear.value = new Date().getFullYear();
   defaultColumns.value = columns;
   filters.value = {};
-  filters.value['user_id'] = { value: user.id, matchMode: 'contains' };
+  filters.value['user_id'] = { value: user.value.id, matchMode: 'contains' };
   await getRecommendationUsers({
     columns: JSON.stringify(defaultColumns.value.map(i => i.field)),
     filters: JSON.stringify(filters.value),

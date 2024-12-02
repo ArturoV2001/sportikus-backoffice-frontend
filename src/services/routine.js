@@ -41,3 +41,13 @@ export const deleteRoutine = async (id) => {
   const response = await api.delete(`/routines/${id}`);
   return response.data;
 };
+
+export const assignRoutine = async (params) => {
+  const response = await api.get(`/routines-assign-routine`, { params });
+  return response.data;
+};
+
+export const getRoutineExercises = async (params) => {
+  const response = await api.get(`/routines-get-routine-exercises`, { params });
+  return response.data;
+};

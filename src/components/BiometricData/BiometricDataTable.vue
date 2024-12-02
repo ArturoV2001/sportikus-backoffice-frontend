@@ -78,7 +78,7 @@ const chargeData = async () => {
 }
 const restartFilters = () => {
   filters.value = {}
-  filters.value['user_id'] = {value: user.id, matchMode: 'contains' };
+  filters.value['user_id'] = {value: user.value.id, matchMode: 'contains' };
   defaultColumns.value.map(i => i.filter.value = "");
 
   chargeData();

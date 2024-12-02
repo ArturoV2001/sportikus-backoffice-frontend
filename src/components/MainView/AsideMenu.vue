@@ -45,7 +45,13 @@
         <li>
           <router-link :to="{path: '/recommendations'}" @click="spin(6)" class="flex items-center p-2 text-gray-900 rounded-lg dark:text-white hover:bg-gray-100 dark:hover:bg-gray-700 group">
             <i :class="selectedItem === 6 ? 'pi pi-address-book pi-spin' : 'pi pi-address-book'" style="font-size: 1.5rem"/>
-            <span class="ms-3">Mis recomendaciones</span>
+            <span class="ms-3">Mis Recomendaciones</span>
+          </router-link>
+        </li>
+        <li>
+          <router-link :to="{path: '/routine'}" @click="spin(7)" class="flex items-center p-2 text-gray-900 rounded-lg dark:text-white hover:bg-gray-100 dark:hover:bg-gray-700 group">
+            <i :class="selectedItem === 7 ? 'pi pi-file-edit pi-spin' : 'pi pi-file-edit'" style="font-size: 1.5rem"/>
+            <span class="ms-3">Mi Rutina</span>
           </router-link>
         </li>
       </ul>
