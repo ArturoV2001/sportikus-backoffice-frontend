@@ -6,25 +6,27 @@
 </template>
 
 <script setup>
-import { onMounted, ref } from 'vue';
+import { inject, onMounted, ref } from 'vue'
 import { useRouter } from 'vue-router';
 import { authCheckSession } from '@/services/auth.js';
 import Toast from 'primevue/toast';
 
-const auth = ref(false);
+const adminPermission = inject('adminPermission');
+const user = inject('user');
 const router = useRouter();
 const response = ref();
 
 const startApplication = async () => {
-  auth.value = false;
+  console.log('hola')
   if (localStorage.getItem('auth')) {
     response.value = await authCheckSession()
       .catch(()=>{
         router.push({ name: 'login' });
       });
     if (response.value.authenticated === true) {
-      localStorage.setItem('user', JSON.stringify(response.value.user));
-      router.push({ name: 'dashboard' });
+      console.log('llega aqui')
+      user.value = response.value.user;
+      adminPermission.value = user.value.user_type_id === 1;
     } else {
       router.push({ name: 'login' });
     }

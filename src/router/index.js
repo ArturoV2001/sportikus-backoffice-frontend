@@ -75,6 +75,7 @@ const routes = [
     name: 'home',
     component: MainComponent,
     children: mainComponentRoutes,
+    redirect: '/dashboard'
   },
   {
     path: '/login',

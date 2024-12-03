@@ -25,20 +25,11 @@
                 required>
             </div>
             <div class="flex items-center justify-between">
-              <div class="flex items-start">
-                <div class="flex items-center h-5">
-                  <input
-                    id="remember" aria-describedby="remember-description" type="checkbox"
-                    class="w-4 h-4 border border-gray-300 rounded bg-gray-50 focus:ring-3 focus:ring-primary-300 dark:bg-gray-700 dark:border-gray-600 dark:focus:ring-primary-600 dark:ring-offset-gray-800">
-                </div>
-                <div id="remember-description" class="ml-3 text-sm">
-                  <label for="remember" class="text-gray-500 dark:text-gray-300">Recuérdame</label>
-                </div>
-              </div>
               <a href="" class="text-sm font-medium text-primary-600 hover:underline dark:text-primary-500">¿Olvidaste tu contraseña?</a>
             </div>
             <button
               type="submit"
+              :disabled="isSubmitting"
               class="w-full text-white bg-primary-600 hover:bg-primary-700 focus:ring-4 focus:outline-none focus:ring-primary-300 font-medium rounded-lg text-sm px-5 py-2.5 text-center dark:bg-primary-600 dark:hover:bg-primary-700 dark:focus:ring-primary-800 cursor-pointer">
               Iniciar sesión
             </button>
@@ -92,35 +83,43 @@
             </div>
             <div class="flex items-start">
               <div class="flex items-center h-5">
-                <input v-model="termsAndConditions" id="terms" aria-describedby="terms" type="checkbox" class="w-4 h-4 border border-gray-300 rounded bg-gray-50 focus:ring-3 focus:ring-primary-300 dark:bg-gray-700 dark:border-gray-600 dark:focus:ring-primary-600 dark:ring-offset-gray-800" required>
+                <input v-model="termsAndConditions" id="terms" aria-describedby="terms" type="checkbox" class="w-4 h-4 border border-gray-300 rounded bg-gray-50 focus:ring-3 focus:ring-primary-300 dark:bg-gray-700 dark:border-gray-600 dark:focus:ring-primary-600 dark:ring-offset-gray-800">
               </div>
               <div class="ml-3 text-sm">
-                <label for="terms" class="font-light text-gray-500 dark:text-gray-300">Acepto los <a class="font-medium text-primary-600 hover:underline dark:text-primary-500" href="#">Términos y Condiciones</a></label>
+                <label for="terms" class="font-light text-gray-500 dark:text-gray-300">Acepto los <a class="font-medium text-primary-600 hover:underline dark:text-primary-500 cursor-pointer" @click="termsModal.beforeOpen()">Términos y Condiciones</a></label>
               </div>
             </div>
-            <button type="submit" class="w-full text-white bg-primary-600 hover:bg-primary-700 focus:ring-4 focus:outline-none focus:ring-primary-300 font-medium rounded-lg text-sm px-5 py-2.5 text-center dark:bg-primary-600 dark:hover:bg-primary-700 dark:focus:ring-primary-800 cursor-pointer">Crear cuenta</button>
+            <button
+              type="submit"
+              :disabled="isSubmitting || !termsAndConditions"
+              class="w-full text-white bg-primary-600 hover:bg-primary-700 focus:ring-4 focus:outline-none focus:ring-primary-300 font-medium rounded-lg text-sm px-5 py-2.5 text-center dark:bg-primary-600 dark:hover:bg-primary-700 dark:focus:ring-primary-800 cursor-pointer
+              disabled:bg-gray-500 disabled:text-gray-300 disabled:shadow-none disabled:cursor-auto">
+              Crear cuenta
+            </button>
             <p class="text-sm font-light text-gray-500 dark:text-gray-400">
-              ¿Ya tienes una cuenta? <a @click="newUser=false" class="font-medium text-primary-600 hover:underline dark:text-primary-500 cursor-pointer">Inicia sesión aquí</a>
+              ¿Ya tienes una cuenta? <a @click="newUser = false" class="font-medium text-primary-600 hover:underline dark:text-primary-500 cursor-pointer">Inicia sesión aquí</a>
             </p>
           </alv-form>
         </div>
       </div>
     </div>
   </section>
-
+  <TermsAndConditions ref="termsModal"/>
 </template>
 
+
 <script setup>
-import { ref } from 'vue'
+import { inject, onMounted, ref } from 'vue'
 import {authLogin, authRegister} from '@/services/auth.js'
 import { useToast } from 'primevue/usetoast'
-//import { useRouter } from 'vue-router'
+import TermsAndConditions from '@/components/GlobalComponents/TermsAndConditions.vue'
 
-//const router = useRouter();
+const user = inject('user');
+const termsModal = ref(null);
 const toast = useToast();
 const newUser = ref(false);
 const termsAndConditions = ref(false);
-
+const isSubmitting = ref(false);
 const loginItem = ref({
   email: null,
   password: null,
@@ -136,7 +135,12 @@ const registerItem = ref({
   gender_id:1,
 });
 
+const beforeOpen = () => {
+  isSubmitting.value = false;
+}
+
 const submitLogin = async () => {
+  isSubmitting.value = true;
   await authLogin(loginItem.value)
     .then(response => {
       toast.add({
@@ -146,51 +150,51 @@ const submitLogin = async () => {
       });
       setTimeout(() => {
         localStorage.setItem('auth',response.access_token);
-        localStorage.setItem('user',JSON.stringify(response.user));
+        user.value = response.user;
         window.location.href = '/';
       },3000)
     })
-    .catch(response => {
+    .catch((error) => {
+      const errorMessage = error.response?.data?.message;
       toast.add({
-        severity:'error',
-        summary:'Error',
-        detail:response.message,
-        life:3000,
+        severity: 'error',
+        summary: 'Error',
+        detail: errorMessage,
+        life: 3000,
       });
-    });
+    })
+    .finally(() => { isSubmitting.value = false;});
 }
 
 const submitRegister = async () => {
-  if (termsAndConditions.value) {
-    await authRegister(registerItem.value)
-      .then(response => {
-        toast.add({
-          severity:'success',
-          summary:'¡Felicidades!',
-          detail: `Te has registrado en Sportikus ¡Bienvenid${response.user.gender_id === 1 ? 'a' : 'o'}!`,
-          life: 3000,
-        });
-        setTimeout(() => {
-          localStorage.setItem('auth',response.access_token);
-          localStorage.setItem('user',JSON.stringify(response.user));
-          window.location.href = '/';
-        })
-      })
-      .catch(response => {
-        toast.add({
-          severity:'error',
-          summary:'Error',
-          detail:response.message,
-          life:3000,
-        });
+  isSubmitting.value = true;
+  await authRegister(registerItem.value)
+    .then(response => {
+      toast.add({
+        severity:'success',
+        summary:'¡Felicidades!',
+        detail: `Te has registrado en Sportikus ¡Bienvenid${response.user.gender_id === 1 ? 'a' : 'o'}!`,
+        life: 3000,
       });
-  }else {
-    toast.add({
-      severity:'error',
-      summary:'Error',
-      detail:'Acepta los terminos y condiciones.',
-      life:3000,
-    });
-  }
+      setTimeout(() => {
+        localStorage.setItem('auth',response.access_token);
+        user.value = response.user;
+        window.location.href = '/';
+      })
+    })
+    .catch((error) => {
+      const errorMessage = error.response?.data?.message;
+      toast.add({
+        severity: 'error',
+        summary: 'Error',
+        detail: errorMessage,
+        life: 3000,
+      });
+    })
+    .finally(() => { isSubmitting.value = false;});
 }
+
+onMounted(()=> {
+  beforeOpen();
+})
 </script>

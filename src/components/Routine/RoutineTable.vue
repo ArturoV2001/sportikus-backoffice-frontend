@@ -1,12 +1,21 @@
 <template>
   <div class="w-full justify-content-center">
-    <div class="bg-gray-100 h-auto items-center justify-center rounded-lg">
-      <h1
-        class="self-center text-xl font-semibold sm:text-3xl whitespace-nowrap dark:text-white pl-8 pt-6 pb-2 ml-14">
-        Rutina
-      </h1>
+    <div class="bg-gray-100 h-auto items-center justify-center rounded-lg pb-20">
+      <div class="w-full flex items-center justify-between mr-2 mb-4 pt-6 pl-20 pr-6 pb-2">
+        <h1 class="text-3xl font-semibold whitespace-nowrap dark:text-white mr-2">
+          Rutina
+        </h1>
+        <div class="flex">
+          <button
+            @click="modal.beforeOpen(true)"
+            class="ml-4 inline-flex items-center text-white bg-[#16313C] focus:ring-4 focus:outline-none focus:ring-primary-300 rounded-lg px-5 py-2.5 text-center">
+            <i class="pi pi-plus-circle mr-2"/>
+            <span class="text-md">Cambiar mi rutina</span>
+          </button>
+        </div>
+      </div>
       <div v-if="routine && routine.data.length > 0" class="bg-white shadow-lg rounded-lg p-6 mx-20 mt-4">
-        <h2 class="text-lg font-semibold text-gray-800 mb-2">
+        <h2 v-if="routine.data[0].ailment_name" class="text-lg font-semibold text-gray-800 mb-2">
           Padecimiento del usuario:
           <span class="text-indigo-600">{{ routine.data[0].ailment_name }}</span>
         </h2>
@@ -20,7 +29,7 @@
         </p>
         <p class="text-gray-600 text-justify">
           <span class="font-medium text-gray-800">Objetivos y recomendaciones:</span>
-          {{ routine.data[0].ailment_routine_description }}
+          {{ routine.data[0].ailment_routine_description ? routine.data[0].ailment_routine_description : noneAilmentDescription }}
         </p>
       </div>
 
@@ -48,6 +57,7 @@ const user = inject('user');
 const routine = ref({ data: [] }); // Inicialización con estructura esperada
 const routineExercises = ref({});
 const modal = ref(null);
+const noneAilmentDescription = 'Para usuarios sin padecimientos, las rutinas se orientan a mejorar la condición física general, equilibrando fuerza, resistencia y movilidad mediante ejercicios básicos y efectivos. Es importante mantener una intensidad progresiva y variada, adaptándola a los objetivos personales.';
 
 const beforeOpen = () => {
   routine.value = { data: [] }; // Reiniciar como objeto vacío

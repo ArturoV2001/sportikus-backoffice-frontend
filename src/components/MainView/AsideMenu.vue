@@ -26,7 +26,7 @@
           </router-link>
         </li>
         <li>
-          <router-link :to="{path: '/users'}" @click="spin(4)" class="flex items-center p-2 text-gray-900 rounded-lg dark:text-white hover:bg-gray-100 dark:hover:bg-gray-700 group">
+          <router-link v-if="adminPermission" :to="{path: '/users'}" @click="spin(4)" class="flex items-center p-2 text-gray-900 rounded-lg dark:text-white hover:bg-gray-100 dark:hover:bg-gray-700 group">
             <i :class="selectedItem === 4 ? 'pi pi-users pi-spin' : 'pi pi-users'" style="font-size: 1.5rem"/>
             <span class="ms-3">Usuarios</span>
           </router-link>
@@ -54,12 +54,30 @@
             <span class="ms-3">Mi Rutina</span>
           </router-link>
         </li>
+        <li>
+          <hr>
+          <span class="flex my-2 items-center pl-2 pt-2 pb-2 text-gray-900 rounded-lg dark:text-white">Sobre la App</span>
+          <hr>
+        </li>
+        <li>
+          <button @click="()=>{spin(8); termsModal.beforeOpen()}" class="flex items-center p-2 text-gray-900 rounded-lg dark:text-white hover:bg-gray-100 dark:hover:bg-gray-700 group">
+            <i :class="selectedItem === 8 ? 'pi pi-lock pi-spin' : 'pi pi-lock'" style="font-size: 1.5rem"/>
+            <span class="ms-3">Terminos y condiciones</span>
+          </button>
+        </li>
       </ul>
     </div>
   </aside>
+  <TermsAndConditions ref="termsModal"/>
 </template>
+
+
 <script setup>
-import { ref } from 'vue'
+import { inject, ref } from 'vue'
+import TermsAndConditions from '@/components/GlobalComponents/TermsAndConditions.vue'
+
+const adminPermission = inject('adminPermission');
+const termsModal = ref(null);
 
 const selectedItem = ref(0);
 const spin = (index) => {

@@ -40,7 +40,7 @@
       </div>
       <div class="flex justify-end gap-2">
         <Button type="button" label="Cancelar" severity="secondary" @click="visible = false"></Button>
-        <button type="submit" class="text-white bg-primary-600 hover:bg-primary-700 focus:ring-4 focus:outline-none focus:ring-primary-300 font-medium rounded-lg text-sm px-5 py-2.5 text-center dark:bg-primary-600 dark:hover:bg-primary-700 dark:focus:ring-primary-800">
+        <button :disabled="isSubmitted" type="submit" class="text-white bg-primary-600 hover:bg-primary-700 focus:ring-4 focus:outline-none focus:ring-primary-300 font-medium rounded-lg text-sm px-5 py-2.5 text-center dark:bg-primary-600 dark:hover:bg-primary-700 dark:focus:ring-primary-800">
           <i class="pi pi-bookmark-fill mr-2" style="color: white; font-size: 1rem"/>
           Guardar
         </button>
@@ -59,6 +59,7 @@ import { useToast } from 'primevue/usetoast';
 import { ref } from 'vue';
 import { getUserById, createUser, updateUser } from '@/services/user.js';
 
+const isSubmitted = ref(false);
 const emit = defineEmits(['elementCreated']);
 const toast = useToast();
 const visible = ref(false);
@@ -76,6 +77,7 @@ const itemData = ref({
 });
 
 const beforeOpen = async (key = null) => {
+  isSubmitted.value = false;
   id.value = null;
   itemData.value = {
     email:null,
@@ -98,6 +100,7 @@ const beforeOpen = async (key = null) => {
 };
 
 const createElement = async () => {
+  isSubmitted.value = true;
   await createUser(itemData.value)
     .then(() => {
       visible.value = false;
@@ -109,17 +112,20 @@ const createElement = async () => {
       });
       emit('elementCreated');
     })
-    .catch(response => {
+    .catch((error) => {
+      const errorMessage = error.response?.data?.message;
       toast.add({
         severity: 'error',
         summary: 'Error',
-        detail: response.message,
+        detail: errorMessage,
         life: 3000,
       });
     })
+    .finally(() => {isSubmitted.value = false});
 };
 
 const updateElement = async () => {
+  isSubmitted.value = true;
   await updateUser(id.value, itemData.value)
     .then(() => {
       visible.value = false;
@@ -131,14 +137,16 @@ const updateElement = async () => {
       });
       emit('elementCreated');
     })
-    .catch(response => {
+    .catch((error) => {
+      const errorMessage = error.response?.data?.message;
       toast.add({
         severity: 'error',
         summary: 'Error',
-        detail: response.message,
+        detail: errorMessage,
         life: 3000,
       });
     })
+    .finally(() => {isSubmitted.value = false});
 };
 
 defineExpose({ beforeOpen });

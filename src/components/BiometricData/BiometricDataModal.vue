@@ -54,7 +54,7 @@
             <i class="pi pi-stopwatch"/>
             Simular datos
           </Button>
-          <button type="submit" class="text-white bg-primary-600 hover:bg-primary-700 focus:ring-4 focus:outline-none focus:ring-primary-300 font-medium rounded-lg text-sm px-5 py-2.5 text-center dark:bg-primary-600 dark:hover:bg-primary-700 dark:focus:ring-primary-800">
+          <button :disabled="isSubmitted" type="submit" class="text-white bg-primary-600 hover:bg-primary-700 focus:ring-4 focus:outline-none focus:ring-primary-300 font-medium rounded-lg text-sm px-5 py-2.5 text-center dark:bg-primary-600 dark:hover:bg-primary-700 dark:focus:ring-primary-800">
             <i class="pi pi-bookmark-fill mr-2" style="color: white; font-size: 1rem"/>
             Guardar
           </button>
@@ -88,6 +88,7 @@ import { generateRecommendation } from "@/services/biometric_data.js";
 
 const toast = useToast();
 
+const isSubmitted = ref();
 const progressBarValue = ref();
 const progressBarIntervalSize = ref();
 const progressBarInterval = ref();
@@ -121,6 +122,7 @@ const beforeOpen = () => {
 };
 
 const createElement = async () => {
+  isSubmitted.value = true;
   await generateRecommendation(itemData.value)
     .then((response) => {
       recommendation.value = response.data.recommendation;
@@ -129,12 +131,15 @@ const createElement = async () => {
       startProgress();
     })
     .catch((error) => {
-      setTimeout(() => {
-        modalScreenOption.value = 1;
-        toast.add({ severity: "error", summary: "Error", detail: error.message, life: 3000 });
-      }, 3000);
-    });
-};
+      const errorMessage = error.response?.data?.message;
+      toast.add({
+        severity: 'error',
+        summary: 'Error',
+        detail: errorMessage,
+        life: 3000,
+      });
+    })
+    .finally(() => {isSubmitted.value = false});};
 
 const startProgress = () => {
   modalScreenOption.value = 2;

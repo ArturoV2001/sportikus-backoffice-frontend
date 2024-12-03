@@ -15,7 +15,8 @@ import Chart from 'primevue/chart';
 
 const app = createApp(App);
 
-const user = ref(JSON.parse(localStorage.getItem('user')));
+const user = ref();
+const adminPermission = ref(false);
 
 app.use(PrimeVue, {
   ripple: true,
@@ -37,6 +38,7 @@ app.directive('tooltip', Tooltip);
 app.component('PrimeChart', Chart);
 
 app.provide('user', user);
+app.provide('adminPermission', adminPermission);
 
 router.isReady().then(() => {
   app.mount('#app');

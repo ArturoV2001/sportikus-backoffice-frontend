@@ -15,6 +15,7 @@
           <span class="text-md">Restablecer filtros</span>
         </button>
         <button
+          v-if="adminPermission"
           @click="modal.beforeOpen()"
           class="ml-4 inline-flex items-center text-white bg-[#16313C] focus:ring-4 focus:outline-none focus:ring-primary-300 rounded-lg px-5 py-2.5 text-center">
           <i class="pi pi-plus-circle mr-2"/>
@@ -40,6 +41,7 @@
           </Column>
         </template>
         <Column
+          v-if="adminPermission"
           header="Acciones" style="width: 150px"
           header-style="background-color:#16313C; color: #ffffff;">
           <template #body="slotProps">
@@ -58,7 +60,7 @@
 import InputText from 'primevue/inputtext'
 import DataTable from 'primevue/datatable';
 import Column from 'primevue/column';
-import { ref, onMounted } from 'vue';
+import { ref, onMounted, inject } from 'vue'
 import { getAilments } from '@/services/ailment.js';
 import { columns } from '@/resources/Columns/AilmentsColumns.js';
 import debounce from 'lodash/debounce';
@@ -66,6 +68,7 @@ import AilmentsModal from '@/components/Ailments/AilmentsModal.vue'
 import ActionButtons from '@/components/GlobalComponents/ActionButtons.vue'
 import AilmentsRemoveModal from '@/components/Ailments/AilmentsRemoveModal.vue'
 
+const adminPermission = inject('adminPermission');
 const modal = ref(null);
 const deleteModal = ref(null);
 const defaultColumns = ref([]);

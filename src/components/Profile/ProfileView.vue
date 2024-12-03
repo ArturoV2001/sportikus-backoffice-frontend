@@ -69,15 +69,11 @@
 import Tag from 'primevue/tag';
 import Image from 'primevue/image';
 import Password from 'primevue/password';
-import { onMounted, ref } from 'vue'
+import { inject } from 'vue'
 import { useToast } from 'primevue/usetoast'
 
 const toast = useToast();
-const user = ref([]);
-
-const beforeOpen = () => {
-  user.value = JSON.parse(localStorage.getItem('user'));
-}
+const user = inject('user');
 
 const changePassword = () => {
   toast.add({
@@ -95,9 +91,5 @@ const formatTimestampToDate = (timestamp) => {
   const day = date.getDate().toString().padStart(2, '0');
   return `${year}-${month}-${day}`;
 };
-
-onMounted(() => {
-  beforeOpen();
-})
 
 </script>
