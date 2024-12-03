@@ -98,13 +98,10 @@ const restartFilters = () => {
   chargeData();
 }
 const filterColumn = debounce((field, val) => {
-  console.log(val)
   if (val !== "") {
     filters.value[field] = {value: `%${val}%`, matchMode: 'contains' };
-    console.log(filters.value);
   }else {
     delete filters.value[field];
-    console.log(filters.value);
   }
   chargeData();
 }, 1200);

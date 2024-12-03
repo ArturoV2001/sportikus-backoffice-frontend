@@ -17,14 +17,12 @@ const router = useRouter();
 const response = ref();
 
 const startApplication = async () => {
-  console.log('hola')
   if (localStorage.getItem('auth')) {
     response.value = await authCheckSession()
       .catch(()=>{
         router.push({ name: 'login' });
       });
     if (response.value.authenticated === true) {
-      console.log('llega aqui')
       user.value = response.value.user;
       adminPermission.value = user.value.user_type_id === 1;
     } else {

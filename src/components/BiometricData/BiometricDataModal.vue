@@ -88,6 +88,7 @@ import { generateRecommendation } from "@/services/biometric_data.js";
 
 const toast = useToast();
 
+const emit = defineEmits(['elementCreated']);
 const isSubmitted = ref();
 const progressBarValue = ref();
 const progressBarIntervalSize = ref();
@@ -153,6 +154,7 @@ const startProgress = () => {
       let delay = recommendationSuccess.value ? 2000 : 0;
       setTimeout(() => {
         modalScreenOption.value = 3;
+        emit('elementCreated');
       }, delay);
     }
     progressBarValue.value = newValue;

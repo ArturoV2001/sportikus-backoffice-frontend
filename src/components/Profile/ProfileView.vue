@@ -95,6 +95,11 @@ const changePassword = async () => {
         detail:'Tu contraseña ha sido cambiada exitosamente.',
         life:3000,
       });
+      changePasswordData.value = {
+        current_password: null,
+        new_password: null,
+        new_password_confirmation: null,
+      }
     }).catch((error) => {
       const errorMessage = error.response?.data?.message;
       toast.add({
