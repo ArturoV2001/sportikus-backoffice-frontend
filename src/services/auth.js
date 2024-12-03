@@ -52,3 +52,13 @@ export const authCheckSession = async () => {
   return response.data;
 }
 
+export const authChangePassword = async (data) => {
+  const response = await axios.create({
+    baseURL: baseURL,
+    headers: {
+      'Content-Type': 'application/json',
+      'Authorization': `Bearer ${localStorage.getItem('auth')}`,
+    },
+  }).post('/change-password', data);
+  return response.data;
+};

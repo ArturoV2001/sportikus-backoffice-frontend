@@ -15,7 +15,18 @@ import Chart from 'primevue/chart';
 
 const app = createApp(App);
 
-const user = ref();
+const user = ref({
+  email:null,
+  password:null,
+  name:null,
+  last_name:null,
+  weight:null,
+  birthdate:null,
+  user_type_id:null,
+  gender_id:null,
+  routine_id:null,
+  ailment_id:null,
+});
 const adminPermission = ref(false);
 
 app.use(PrimeVue, {

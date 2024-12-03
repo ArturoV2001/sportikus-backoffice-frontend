@@ -32,34 +32,37 @@
     </div>
     <div>
       <div class="border-double border-2 border-light-blue-500 rounded-lg p-6 mt-6">
-        <h1 class="self-center text-xl font-semibold sm:text-2xl whitespace-nowrap dark:text-white mb-2">
-          Cambiar contraseña
-        </h1>
-        <h1 class="self-center text-xl font-semibold sm:text-sm whitespace-nowrap dark:text-white mt-1">
-          <i class="pi pi-info-circle mr-2"></i> Ingresa los datos solicitados para cambiar tu contraseña.
-        </h1>
-        <div class="flex w-full">
-          <div class="w-1/3 pt-4">
-            <span class="block mb-2 text-xl font-semibold sm:text-sm dark:text-white">Contraseña:</span>
-            <Password class="w-full" />
+        <alv-form :action="changePassword">
+          <h1 class="self-center text-xl font-semibold sm:text-2xl whitespace-nowrap dark:text-white mb-2">
+            Cambiar contraseña
+          </h1>
+          <h1 class="self-center text-xl font-semibold sm:text-sm whitespace-nowrap dark:text-white mt-1">
+            <i class="pi pi-info-circle mr-2"></i> Ingresa los datos solicitados para cambiar tu contraseña.
+          </h1>
+          <div class="flex w-full">
+            <div class="w-1/3 pt-4">
+              <span class="block mb-2 text-xl font-semibold sm:text-sm dark:text-white">Contraseña:</span>
+              <Password class="w-full" v-model="changePasswordData.current_password" />
+            </div>
+            <div class="w-1/3 pt-4">
+              <span class="block mb-2 text-xl font-semibold sm:text-sm dark:text-white">Contraseña:</span>
+              <Password class="w-full" v-model="changePasswordData.new_password"/>
+            </div>
+            <div class="w-1/3 pt-4">
+              <span class="block mb-2 text-xl font-semibold sm:text-sm dark:text-white">Contraseña:</span>
+              <Password class="w-full" v-model="changePasswordData.new_password_confirmation"/>
+            </div>
           </div>
-          <div class="w-1/3 pt-4">
-            <span class="block mb-2 text-xl font-semibold sm:text-sm dark:text-white">Contraseña:</span>
-            <Password class="w-full" />
+          <div class="flex justify-end">
+            <button
+              type="submit"
+              :disabled="isSubmitting"
+              class="text-white mt-4 bg-primary-600 hover:bg-primary-700 focus:ring-4 focus:outline-none focus:ring-primary-300 font-medium rounded-lg text-sm px-5 py-2.5 dark:bg-primary-600 dark:hover:bg-primary-700 dark:focus:ring-primary-800">
+              <i class="pi pi-bookmark-fill mr-2" style="color: white; font-size: 1rem"></i>
+              Cambiar
+            </button>
           </div>
-          <div class="w-1/3 pt-4">
-            <span class="block mb-2 text-xl font-semibold sm:text-sm dark:text-white">Contraseña:</span>
-            <Password class="w-full" />
-          </div>
-        </div>
-        <div class="flex justify-end">
-          <button
-            @click="changePassword"
-            class="text-white mt-4 bg-primary-600 hover:bg-primary-700 focus:ring-4 focus:outline-none focus:ring-primary-300 font-medium rounded-lg text-sm px-5 py-2.5 dark:bg-primary-600 dark:hover:bg-primary-700 dark:focus:ring-primary-800">
-            <i class="pi pi-bookmark-fill mr-2" style="color: white; font-size: 1rem"></i>
-            Cambiar
-          </button>
-        </div>
+        </alv-form>
       </div>
     </div>
   </div>
@@ -69,19 +72,39 @@
 import Tag from 'primevue/tag';
 import Image from 'primevue/image';
 import Password from 'primevue/password';
-import { inject } from 'vue'
+import { inject, ref } from 'vue'
 import { useToast } from 'primevue/usetoast'
+import {authChangePassword} from '@/services/auth.js'
 
+const isSubmitting = ref(false);
 const toast = useToast();
 const user = inject('user');
+const changePasswordData = ref({
+  current_password: null,
+  new_password: null,
+  new_password_confirmation: null,
+});
 
-const changePassword = () => {
-  toast.add({
-    severity:'success',
-    summary:'¡Felicidades!',
-    detail:'Tu contraseña ha sido cambiada exitosamente.',
-    life:3000,
-  })
+const changePassword = async () => {
+  isSubmitting.value = true;
+  await authChangePassword(changePasswordData.value)
+    .then(() => {
+      toast.add({
+        severity:'success',
+        summary:'¡Felicidades!',
+        detail:'Tu contraseña ha sido cambiada exitosamente.',
+        life:3000,
+      });
+    }).catch((error) => {
+      const errorMessage = error.response?.data?.message;
+      toast.add({
+        severity: 'error',
+        summary: 'Error',
+        detail: errorMessage,
+        life: 3000,
+      });
+    })
+    .finally(() => {isSubmitting.value = false})
 }
 
 const formatTimestampToDate = (timestamp) => {
