@@ -1,10 +1,10 @@
 <template>
   <Dialog
     v-model:visible="visible" :closable="close" modal draggable
-    :header="'Asignar rutina'" class="w-1/3 px-4">
+    :header="adminPermission ? 'Administrar Rutina' : 'Asignar rutina'" class="w-1/3 px-4">
     <alv-form :action="assignRoutineAction">
     <div class="items-center text-center gap-4 mb-4">
-      <label for="ailment_button" class="font-semibold w-full">¿Sufres de algun padecimiento?</label>
+      <label for="ailment_button" class="font-semibold w-full">{{adminPermission ? 'Padecimiento' : '¿Sufres de algun padecimiento?'}}</label>
       <button name="ailment_button" v-if="!ailmentExist" @click="() => {ailmentExist = true; ailment_id = -1}" class="w-full text-white bg-red-400 hover:bg-red-500 focus:ring-4 focus:outline-none focus:ring-red-300 font-medium rounded-lg text-sm px-5 py-2.5 text-center dark:bg-red-600 dark:hover:bg-red-700 dark:focus:ring-red-800">
         No
       </button>
@@ -17,7 +17,7 @@
       <AilmentDropdown v-model="ailment_id" />
     </div>
     <div class="items-center text-center gap-4 mb-8">
-      <label for="ailment_button" class="font-semibold w-1/2">Selecciona la frecuencia de tu rutina: </label>
+      <label for="ailment_button" class="font-semibold w-1/2">{{adminPermission ? 'Frecuencia de la rutina: ' : 'Selecciona la frecuencia de tu rutina: '}}</label>
       <Dropdown
         v-model="frequency" :options="filteredOptions" optionLabel="name" optionValue="id"
         placeholder="Frecuencia en días" class="w-full md:w-14rem" />
@@ -41,6 +41,7 @@ import { assignRoutine } from '@/services/routine.js';
 import AilmentDropdown from '@/components/Dropdowns/AilmentDropdown.vue'
 import { useToast } from 'primevue/usetoast'
 
+const adminPermission = inject('adminPermission');
 const toast = useToast();
 const isSubmitted = ref(false);
 const user = inject('user');

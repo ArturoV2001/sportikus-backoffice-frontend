@@ -39,20 +39,25 @@
           <h1 class="self-center text-xl font-semibold sm:text-sm whitespace-nowrap dark:text-white mt-1">
             <i class="pi pi-info-circle mr-2"></i> Ingresa los datos solicitados para cambiar tu contraseña.
           </h1>
-          <div class="flex w-full">
-            <div class="w-1/3 pt-4">
-              <span class="block mb-2 text-xl font-semibold sm:text-sm dark:text-white">Contraseña:</span>
+          <div class="flex flex-col md:flex-row md:gap-4 w-full">
+            <div class="flex-grow pt-4">
+              <span class="block mb-2 text-lg font-semibold dark:text-white">Contraseña actual:</span>
               <Password class="w-full" v-model="changePasswordData.current_password" />
             </div>
-            <div class="w-1/3 pt-4">
-              <span class="block mb-2 text-xl font-semibold sm:text-sm dark:text-white">Contraseña:</span>
-              <Password class="w-full" v-model="changePasswordData.new_password"/>
+
+            <div class="flex-grow pt-4">
+              <span class="block mb-2 text-lg font-semibold dark:text-white">Nueva contraseña:</span>
+              <Password class="w-full" v-model="changePasswordData.new_password" />
             </div>
-            <div class="w-1/3 pt-4">
-              <span class="block mb-2 text-xl font-semibold sm:text-sm dark:text-white">Contraseña:</span>
-              <Password class="w-full" v-model="changePasswordData.new_password_confirmation"/>
+
+            <div class="flex-grow pt-4">
+              <span class="block mb-2 text-lg font-semibold dark:text-white">Confirmar contraseña:</span>
+              <Password class="w-full" v-model="changePasswordData.new_password_confirmation" />
             </div>
           </div>
+
+
+
           <div class="flex justify-end">
             <button
               type="submit"

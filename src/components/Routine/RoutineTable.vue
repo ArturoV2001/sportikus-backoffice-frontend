@@ -10,7 +10,7 @@
             @click="modal.beforeOpen(true)"
             class=" mr-14 ml-4 inline-flex items-center text-white bg-[#16313C] focus:ring-4 focus:outline-none focus:ring-primary-300 rounded-lg px-5 py-2.5 text-center">
             <i class="pi pi-plus-circle mr-2"/>
-            <span class="text-md">Cambiar mi rutina</span>
+            <span class="text-md">{{adminPermission ? 'Cambiar de rutina' : 'Cambiar mi rutina'}}</span>
           </button>
         </div>
       </div>
