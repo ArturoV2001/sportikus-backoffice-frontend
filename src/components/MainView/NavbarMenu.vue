@@ -65,12 +65,6 @@
                   </router-link>
                 </li>
                 <li>
-                  <a href="#" class="block px-4 py-2 text-sm text-gray-700 hover:bg-gray-100 dark:text-gray-300 dark:hover:bg-gray-600 dark:hover:text-white" role="menuitem">
-                    <i class="pi pi-cog mr-2" style="font-size: 1rem; color: #374151;" />
-                    Configuración
-                  </a>
-                </li>
-                <li>
                   <a
                     @click="props.signOutModalRef.beforeOpen()"
                     class="block px-4 py-2 text-sm text-red-700 hover:bg-gray-100 dark:text-gray-300 dark:hover:bg-gray-600 dark:hover:text-white cursor-pointer"

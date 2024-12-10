@@ -31,7 +31,13 @@
         </div>
         <div class="flex items-center gap-4 mb-4">
           <label for="item.sleep_quantity" class="font-semibold w-1/2">Cantidad de sueño: </label>
-          <InputNumber v-model="itemData.sleep_quantity" id="item.sleep_quantity" class="flex-auto w-1/2" min="0" :max="1200" :maxFractionDigits="0" autocomplete="off" placeholder="0 minutos" suffix=" minutos" />
+          <DatePicker
+            id="datepicker-timeonly"
+            v-model="sleepTime"
+            timeOnly
+            fluid
+            class="flex-auto w-1/2"
+          />
         </div>
         <div class="flex items-center gap-4 mb-4">
           <label for="item.sleep_quality_awake" class="font-semibold w-1/2">Calidad del sueño, tiempo despierto: </label>
@@ -80,6 +86,7 @@
 <script setup>
 import Dialog from "primevue/dialog";
 import Button from "primevue/button";
+import DatePicker from 'primevue/datepicker';
 import InputNumber from "primevue/inputnumber";
 import ProgressBar from "primevue/progressbar";
 import { useToast } from "primevue/usetoast";
@@ -88,6 +95,7 @@ import { generateRecommendation } from "@/services/biometric_data.js";
 
 const toast = useToast();
 
+const sleepTime = ref(null);
 const emit = defineEmits(['elementCreated']);
 const isSubmitted = ref();
 const progressBarValue = ref();
@@ -112,17 +120,22 @@ const itemData = ref({
 });
 
 const beforeOpen = () => {
-  progressBarIntervalSize.value = 2000;
+  sleepTime.value = null; // Reiniciar el DatePicker
   visible.value = true;
   modalScreenOption.value = 1;
   recommendation.value = null;
   itemData.value = {};
   clearInterval(progressBarInterval.value);
   progressBarInterval.value = null;
-
 };
 
 const createElement = async () => {
+  if (sleepTime.value) {
+    const hours = sleepTime.value.getHours();
+    const minutes = sleepTime.value.getMinutes();
+    itemData.value.sleep_quantity = hours * 60 + minutes; // Convertir horas a minutos
+  }
+
   isSubmitted.value = true;
   await generateRecommendation(itemData.value)
     .then((response) => {
@@ -140,7 +153,10 @@ const createElement = async () => {
         life: 3000,
       });
     })
-    .finally(() => {isSubmitted.value = false});};
+    .finally(() => {
+      isSubmitted.value = false;
+    });
+};
 
 const startProgress = () => {
   modalScreenOption.value = 2;
@@ -173,6 +189,16 @@ const simulateMeasurement = () => {
     sleep_quality_core: Math.floor(Math.random() * (240 - 120 + 1)) + 120, // 120-240 minutos en fase ligera/intermedia
     sleep_quality_deep: Math.floor(Math.random() * (120 - 60 + 1)) + 60, // 60-120 minutos en fase profunda
   };
+
+  // Simular una hora de sueño aleatoria
+  const randomHours = Math.floor(Math.random() * 8) + 4; // 4 a 12 horas
+  const randomMinutes = Math.floor(Math.random() * 60); // 0 a 59 minutos
+
+  // Crear un objeto de fecha para el `DatePicker`
+  const simulatedTime = new Date();
+  simulatedTime.setHours(randomHours, randomMinutes, 0, 0); // Establecer horas y minutos aleatorios
+
+  sleepTime.value = simulatedTime; // Asignar al DatePicker
 };
 
 

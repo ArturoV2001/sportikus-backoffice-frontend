@@ -1,35 +1,75 @@
-# sportikus-backoffice-frontend
 
-This template should help get you started developing with Vue 3 in Vite.
+# Sportikus-Backoffice-Frontend
 
-## Recommended IDE Setup
+![Sportikus Logo](src/assets/img/logo_cf.jpg)
 
-[VSCode](https://code.visualstudio.com/) + [Volar](https://marketplace.visualstudio.com/items?itemName=Vue.volar) (and disable Vetur).
+Sportikus-Backoffice-Frontend es el frontend diseñado para la gestión y visualización de datos relacionados con la actividad física y la salud. Este proyecto utiliza Vue.js 3 con Vite, brindando una experiencia de desarrollo rápida y eficiente.
 
-## Customize configuration
+## Instalación
 
-See [Vite Configuration Reference](https://vite.dev/config/).
+Sigue estos pasos para configurar el proyecto en tu entorno local:
 
-## Project Setup
+1. Clona el repositorio:
+   ```bash
+   git clone https://github.com/ArturoV2001/sportikus-backoffice-frontend.git
+   cd sportikus-backoffice-frontend
+   ```
 
-```sh
-npm install
-```
+2. Instala las dependencias con npm:
+   ```bash
+   npm install
+   ```
 
-### Compile and Hot-Reload for Development
+3. Configura el archivo `.env`:
+   Crea un archivo `.env` en la raíz del proyecto si no existe, y define las variables necesarias para tu entorno (como `VITE_API_BASE_URL`).
 
-```sh
-npm run dev
-```
+4. Compila y carga el proyecto en modo desarrollo:
+   ```bash
+   npm run dev
+   ```
 
-### Compile and Minify for Production
+   Accede al proyecto desde tu navegador en [http://localhost:5173](http://localhost:5173).
 
-```sh
-npm run build
-```
+## Uso
 
-### Lint with [ESLint](https://eslint.org/)
+### Comandos principales
 
-```sh
-npm run lint
-```
+- **Compilación para desarrollo**:
+  ```bash
+  npm run dev
+  ```
+
+- **Compilación y minificación para producción**:
+  ```bash
+  npm run build
+  ```
+
+- **Lint para el código**:
+  ```bash
+  npm run lint
+  ```
+
+## Estructura del Proyecto
+
+El proyecto sigue una arquitectura basada en componentes y utiliza las siguientes tecnologías:
+
+- **Vue.js 3**: Framework para construir interfaces de usuario reactivas.
+- **Vite**: Herramienta para el empaquetado y desarrollo rápido.
+- **PrimeVue/TailwindCSS**: (si aplica) Para estilos y componentes preconstruidos.
+- **Axios**: Para las peticiones HTTP hacia el backend.
+
+## Contribuciones
+
+Si deseas contribuir a este proyecto:
+
+1. Haz un fork del repositorio.
+2. Crea una nueva rama para tu funcionalidad:
+   ```bash
+   git checkout -b feature/nueva-funcionalidad
+   ```
+3. Realiza tus cambios y súbelos.
+4. Envía un pull request.
+
+## Licencia
+
+Sportikus-Backoffice-Frontend está licenciado bajo la [MIT License](LICENSE).

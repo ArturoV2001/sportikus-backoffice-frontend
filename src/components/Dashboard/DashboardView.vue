@@ -26,12 +26,10 @@
 </template>
 
 <script setup>
-import { ref, onMounted } from "vue";
+import { ref, onMounted, inject } from 'vue'
 import Chart from 'primevue/chart';
 
-const user = ref({
-  name: "Usuario", // Cambia por el nombre real al integrar los datos
-});
+const user = inject('user');
 
 const chartDataUsers = ref();
 const chartOptionsUsers = ref();
